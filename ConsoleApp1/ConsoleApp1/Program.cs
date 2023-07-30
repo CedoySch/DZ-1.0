@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Kurs
 {
-    internal class main
+    internal class Program
     {
         static void Main(string[] args) 
         {
