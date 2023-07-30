@@ -20,25 +20,25 @@ namespace Kurs
             bool isOpen = true;
             while (isOpen)
             {
-
+                // Данные 1-го персонажа
                 Console.SetCursorPosition(0, 0);
                 TextColor("Характеристики персонажа №1: ", ConsoleColor.DarkGray);
                 Console.Write($"\n\nФракция - {fraction1}\n\nЗдоровье - ");
-                DrawBar(health1 / 10, 10, ConsoleColor.Green, health1);
+                DrawBar(health1 / 10, 10, ConsoleColor.Green, health1); // Шакала здоровья у первого игрока 
                 Console.Write($"\n\nЗащита - ");
-                DrawBar(armor1 / 10, 10, ConsoleColor.Blue, armor1);
+                DrawBar(armor1 / 10, 10, ConsoleColor.Blue, armor1); // Шкала защиты у первого игрока
                 Console.WriteLine($"\n\nУрон - {damage1}");
-
+                // Данные 2-го персонажа
                 Console.SetCursorPosition(0, 11);
                 Console.WriteLine("-----------------------------------------");
                 Console.SetCursorPosition(0, 13);
                 TextColor("Характеристики персонажа №2: ", ConsoleColor.DarkGray);
                 Console.Write($"\n\nФракция - {fraction2}\n\nЗдоровье - ");
-                DrawBar(health2 / 10, 10, ConsoleColor.Green, health2);
+                DrawBar(health2 / 10, 10, ConsoleColor.Green, health2); // Шакала здоровья у второго игрока 
                 Console.Write($"\n\nЗащита - ");
-                DrawBar(armor2 / 10, 10, ConsoleColor.Blue, armor2);
+                DrawBar(armor2 / 10, 10, ConsoleColor.Blue, armor2); // Шкала защиты у второго игрока
                 Console.WriteLine($"\n\nУрон - {damage2}");
-                
+                // Меню действий
                 Console.SetCursorPosition(0, 23);
                 Console.WriteLine("-----------------------------------------\n\n\n");
                 Console.WriteLine("Выберите пункт:\n\n1 - Настроить персонажа №1\n2 - Настроить персонажа №2\n3 - Начать сражение\n\n0 - Выход\n\n\n");
@@ -58,7 +58,7 @@ namespace Kurs
                 {
                     switch (value)
                     {
-                        case 1:
+                        case 1: // Настройка первого персонажа
                             Console.Clear();
                             health1 = 100;
                             Console.Write("Выберите, к какой фракции будет принадлежать персонаж (Добрые, Злые, Нейтральные): ");
@@ -90,7 +90,7 @@ namespace Kurs
                             DrawBar(armor1 / 10, 10, ConsoleColor.Blue, armor1);
                             Console.WriteLine($"\n\nУрон - {damage1}");
                             break;
-                        case 2:
+                        case 2: // Настройка второго персонажа
                             Console.Clear();
                             health2 = 100;
                             Console.Write("Выберите, к какой фракции будет принадлежать персонаж (Добрые, Злые, Нейтральные): ");
@@ -122,20 +122,15 @@ namespace Kurs
                             DrawBar(armor2 / 10, 10, ConsoleColor.Blue, armor2);
                             Console.WriteLine($"\n\nУрон - {damage2}");
                             break;
-                        case 3:
-
-                            if (fraction1 == "")
+                        case 3: // Бой
+                            if (fraction1 == "" || fraction2 == "") // Проверка, заполнены ли данные персонажей
                             {
                                 Console.WriteLine("\nСначала настройте обоих персонажей");
                                 break;
                             }
-                            else if (fraction2 == "")
-                            {
-                                Console.WriteLine("Сначала настройте обоих персонажей");
-                                break;
-                            }
                             else
                             {
+                                // Проверка, есть ли баф или дебаф на урон
                                 float damageBafDebaf = 1f;
                                 if (fraction1 == fraction2 && (fraction1 == "Добрые" || fraction1 == "Злые"))
                                 {
@@ -151,7 +146,7 @@ namespace Kurs
                                 Random rand = new Random();
                                 while (health1f > 0 && health2f > 0)
                                 {
-                                    if (health1f < 35)
+                                    if (health1f < 35) // Берсерк у первого игрока
                                     {
                                         bool berserk1 = Convert.ToBoolean(rand.Next(0, 2));
                                         switch (berserk1) 
@@ -165,7 +160,7 @@ namespace Kurs
                                                 break;
                                         }
                                     }
-                                    if (health2f < 35)
+                                    if (health2f < 35) // Берсерк у второго игрока 
                                     {
                                         bool berserk2 = Convert.ToBoolean(rand.Next(0, 2));
                                         switch (berserk2) 
@@ -179,12 +174,14 @@ namespace Kurs
                                                 break;
                                         }
                                     }
+                                    // Процесс боя
                                     maxDamage1 = (Convert.ToSingle(damage1) * damageBafDebaf) * (1.0f - Convert.ToSingle(armor2) / 100);
                                     maxDamage2 = (Convert.ToSingle(damage2) * damageBafDebaf) * (1.0f - Convert.ToSingle(armor1) / 100);
                                     health1f -= maxDamage2;
                                     health2f -= maxDamage1;
 
                                 }
+                                // Объявление победителя
                                 if (health1f < health2f)
                                     Console.WriteLine($"Победил игрок №2!!! У него осталось {health2f + maxDamage1}HP");
                                 else if (health1f == health2f)
@@ -201,7 +198,7 @@ namespace Kurs
 
         }
         
-        private static void TextColor(string text, ConsoleColor color)
+        private static void TextColor(string text, ConsoleColor color) // Настройка цвета текста
         {
             ConsoleColor defaultColor = Console.ForegroundColor;
             Console.ForegroundColor = color;
@@ -209,7 +206,7 @@ namespace Kurs
             Console.ForegroundColor = defaultColor;
         }
 
-        private static void DrawBar(int len, int maxLen, ConsoleColor color, int value)
+        private static void DrawBar(int len, int maxLen, ConsoleColor color, int value) // Настройка шкалы 
         {
             ConsoleColor defaultColor = Console.BackgroundColor;
             string bar = "";
